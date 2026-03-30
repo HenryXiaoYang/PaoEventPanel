@@ -14,6 +14,8 @@ import (
 func main() {
 	config.Load()
 
+	gin.SetMode(config.AppConfig.GinMode)
+
 	if err := database.InitDB(config.AppConfig.DBDriver, config.AppConfig.DBDSN); err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}

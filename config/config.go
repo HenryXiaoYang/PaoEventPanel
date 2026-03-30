@@ -13,6 +13,7 @@ type Config struct {
 	JWTSecret      string
 	SuperAdminUser string
 	SuperAdminPass string
+	GinMode        string
 }
 
 var AppConfig *Config
@@ -27,6 +28,7 @@ func Load() {
 		JWTSecret:      getEnv("JWT_SECRET", "change-me-in-production"),
 		SuperAdminUser: getEnv("SUPER_ADMIN_USER", "admin"),
 		SuperAdminPass: getEnv("SUPER_ADMIN_PASS", "admin123"),
+		GinMode:        getEnv("GIN_MODE", "debug"),
 	}
 }
 
