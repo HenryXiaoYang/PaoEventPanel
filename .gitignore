@@ -1,0 +1,24 @@
+# PaoEventPanel
+
+# Environment
+*.db
+.env
+uploads/*
+!uploads/.gitkeep
+
+# Go
+/pao-event-panel
+
+# Frontend
+web/node_modules/
+web/dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+.ace-tool/
+.playwright-mcp/
+.claude/
