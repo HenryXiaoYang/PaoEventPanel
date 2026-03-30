@@ -1,108 +1,110 @@
 # PaoEventPanel
 
-校园活动实时计圈排行榜系统。用于跑步、接力等活动的圈数记录、排名展示和数据导出。
+[中文文档](README_CN.md)
 
-## 功能
+A real-time lap-counting leaderboard system for school events. Track laps, display live rankings, and export results.
 
-- **实时排行榜** - 学生个人排名 + 学院排名，自动滚动适配大屏投影
-- **圈数管理** - 管理员实时增减圈数，所有操作留有审计记录
-- **学院系统** - 四个学院（春/夏/秋/冬），自定义颜色，自动汇总排名
-- **主题引擎** - 明暗模式独立配置，支持纯色/渐变/图片背景、卡片毛玻璃效果，内置 4 套预设（Default/Ocean/Spring/Sakura），可自定义保存
-- **权限控制** - 三级权限：访客（只读）、管理员（学生和圈数管理）、超级管理员（全部功能）
-- **数据导出** - 排名数据导出为 Excel (.xlsx)
-- **天气时钟** - 实时时钟 + 基于 IP 的天气显示
+## Features
 
-## 技术栈
+- **Live Leaderboard** - Individual and house rankings with auto-scrolling for projection displays
+- **Lap Management** - Admins add/remove laps in real time with full audit trail
+- **House System** - Four houses (Spring/Summer/Autumn/Winter) with custom colors and aggregated rankings
+- **Theme Engine** - Independent light/dark mode config with solid/gradient/image backgrounds, glass card effects, and 4 built-in presets (Default/Ocean/Spring/Sakura)
+- **Role-Based Access** - Three tiers: viewer (read-only), admin (student & lap management), super admin (full control)
+- **Data Export** - Export rankings to Excel (.xlsx)
+- **Weather & Clock** - Live clock with IP-based weather display
 
-| 层 | 技术 |
+## Tech Stack
+
+| Layer | Technology |
 |---|---|
-| 后端 | Go, Gin, GORM, JWT |
-| 前端 | React, TypeScript, Vite, Tailwind CSS, shadcn/ui, Framer Motion |
-| 数据库 | SQLite（默认）/ PostgreSQL |
-| 部署 | Docker, 多阶段构建 |
+| Backend | Go, Gin, GORM, JWT |
+| Frontend | React, TypeScript, Vite, Tailwind CSS, shadcn/ui, Framer Motion |
+| Database | SQLite (default) / PostgreSQL |
+| Deployment | Docker, multi-stage build |
 
-## 快速开始
+## Quick Start
 
-### Docker（推荐）
+### Docker (Recommended)
 
 ```bash
 docker compose up -d
 ```
 
-访问 http://localhost:8080，默认管理员账号 `admin` / `admin123`。
+Visit http://localhost:8080. Default admin credentials: `admin` / `admin123`.
 
-通过环境变量自定义配置：
+Customize with environment variables:
 
 ```bash
 JWT_SECRET=your-secret SUPER_ADMIN_PASS=strongpass docker compose up -d
 ```
 
-### 本地开发
+### Local Development
 
-**前置要求**：Go 1.25+、Node.js 22+
+**Prerequisites**: Go 1.25+, Node.js 22+
 
 ```bash
-# 克隆项目
+# Clone the project
 git clone https://github.com/HenryXiaoYang/PaoEventPanel.git
 cd PaoEventPanel
 
-# 配置环境变量
+# Set up environment variables
 cp .env.example .env
 
-# 启动后端（默认 :8080）
+# Start the backend (default :8080)
 make dev-backend
 
-# 启动前端开发服务器（另开终端）
+# Start the frontend dev server (in another terminal)
 make dev-frontend
 ```
 
-### 构建生产版本
+### Production Build
 
 ```bash
 make build
 ./pao-event-panel
 ```
 
-## 配置
+## Configuration
 
-通过环境变量或 `.env` 文件配置：
+Configure via environment variables or a `.env` file:
 
-| 变量 | 默认值 | 说明 |
+| Variable | Default | Description |
 |---|---|---|
-| `PORT` | `8080` | 服务端口 |
-| `DB_DRIVER` | `sqlite` | 数据库驱动（`sqlite` 或 `postgres`） |
-| `DB_DSN` | `pao_event.db` | 数据库连接字符串 |
-| `JWT_SECRET` | `change-me-in-production` | JWT 签名密钥 |
-| `SUPER_ADMIN_USER` | `admin` | 初始超级管理员用户名 |
-| `SUPER_ADMIN_PASS` | `admin123` | 初始超级管理员密码 |
+| `PORT` | `8080` | Server port |
+| `DB_DRIVER` | `sqlite` | Database driver (`sqlite` or `postgres`) |
+| `DB_DSN` | `pao_event.db` | Database connection string |
+| `JWT_SECRET` | `change-me-in-production` | JWT signing secret |
+| `SUPER_ADMIN_USER` | `admin` | Initial super admin username |
+| `SUPER_ADMIN_PASS` | `admin123` | Initial super admin password |
 
-PostgreSQL 连接示例：
+PostgreSQL example:
 
 ```
 DB_DRIVER=postgres
 DB_DSN=host=localhost user=postgres password=postgres dbname=pao_event port=5432 sslmode=disable
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 PaoEventPanel/
-├── main.go                  # 入口
-├── config/                  # 配置加载
+├── main.go                  # Entry point
+├── config/                  # Configuration loading
 ├── internal/
-│   ├── database/            # 数据库初始化、迁移、种子数据
-│   ├── handler/             # HTTP 处理器
-│   ├── middleware/          # JWT 认证、CORS
-│   ├── model/               # 数据模型
-│   ├── router/              # 路由定义
-│   └── service/             # 业务逻辑
-├── web/                     # React 前端
+│   ├── database/            # DB init, migration, seeding
+│   ├── handler/             # HTTP handlers
+│   ├── middleware/          # JWT auth, CORS
+│   ├── model/               # Data models
+│   ├── router/              # Route definitions
+│   └── service/             # Business logic
+├── web/                     # React frontend
 │   ├── src/
-│   │   ├── api/             # API 客户端
-│   │   ├── components/      # UI 组件
-│   │   ├── hooks/           # 自定义 Hooks
-│   │   ├── stores/          # Zustand 状态管理
-│   │   └── types/           # TypeScript 类型定义
+│   │   ├── api/             # API client
+│   │   ├── components/      # UI components
+│   │   ├── hooks/           # Custom hooks
+│   │   ├── stores/          # Zustand state management
+│   │   └── types/           # TypeScript type definitions
 │   └── ...
 ├── Dockerfile
 ├── docker-compose.yml
@@ -111,41 +113,41 @@ PaoEventPanel/
 
 ## API
 
-### 公开接口
+### Public Endpoints
 
-| 方法 | 路径 | 说明 |
+| Method | Path | Description |
 |---|---|---|
-| POST | `/api/auth/login` | 登录获取 JWT |
-| GET | `/api/rankings/houses` | 学院排名 |
-| GET | `/api/rankings/students` | 学生排名 |
-| GET | `/api/rankings/stats` | 统计数据 |
-| GET | `/api/activity` | 活动设置 |
-| GET | `/api/students` | 学生列表 |
+| POST | `/api/auth/login` | Authenticate and get JWT |
+| GET | `/api/rankings/houses` | House rankings |
+| GET | `/api/rankings/students` | Student rankings |
+| GET | `/api/rankings/stats` | Aggregate stats |
+| GET | `/api/activity` | Activity settings |
+| GET | `/api/students` | List students |
 
-### 管理员接口（需 JWT）
+### Admin Endpoints (JWT required)
 
-| 方法 | 路径 | 说明 |
+| Method | Path | Description |
 |---|---|---|
-| POST | `/api/students` | 添加学生 |
-| PUT | `/api/students/:id` | 编辑学生 |
-| DELETE | `/api/students/:id` | 删除学生 |
-| POST | `/api/students/:id/laps` | 增减圈数 |
-| PUT | `/api/students/:id/laps` | 设置圈数 |
+| POST | `/api/students` | Add a student |
+| PUT | `/api/students/:id` | Edit a student |
+| DELETE | `/api/students/:id` | Delete a student |
+| POST | `/api/students/:id/laps` | Add/remove laps |
+| PUT | `/api/students/:id/laps` | Set lap count |
 
-### 超级管理员接口（需 JWT）
+### Super Admin Endpoints (JWT required)
 
-| 方法 | 路径 | 说明 |
+| Method | Path | Description |
 |---|---|---|
-| PUT | `/api/activity` | 更新活动设置 |
-| POST | `/api/upload/logo` | 上传 Logo |
-| POST | `/api/upload/background` | 上传背景图 |
-| GET/POST/DELETE | `/api/users` | 用户管理 |
-| GET | `/api/houses` | 学院列表 |
-| PUT | `/api/houses/:id/color` | 修改学院颜色 |
-| GET/POST/DELETE | `/api/theme-presets` | 主题预设管理 |
-| POST | `/api/theme-presets/builtin/apply` | 应用内置预设 |
-| POST | `/api/theme-presets/:id/apply` | 应用自定义预设 |
-| GET | `/api/export/rankings` | 导出排名 Excel |
+| PUT | `/api/activity` | Update activity settings |
+| POST | `/api/upload/logo` | Upload logo |
+| POST | `/api/upload/background` | Upload background image |
+| GET/POST/DELETE | `/api/users` | User management |
+| GET | `/api/houses` | List houses |
+| PUT | `/api/houses/:id/color` | Update house color |
+| GET/POST/DELETE | `/api/theme-presets` | Theme preset management |
+| POST | `/api/theme-presets/builtin/apply` | Apply built-in preset |
+| POST | `/api/theme-presets/:id/apply` | Apply custom preset |
+| GET | `/api/export/rankings` | Export rankings to Excel |
 
 ## License
 
