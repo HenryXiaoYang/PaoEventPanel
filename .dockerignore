@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+*.db
+pao-event-panel
+uploads/*
+!uploads/.gitkeep
+web/node_modules
+web/dist
+.idea
+.vscode
+.claude
+.ace-tool
+.playwright-mcp
