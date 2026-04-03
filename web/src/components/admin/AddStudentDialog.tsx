@@ -69,7 +69,7 @@ export function AddStudentDialog({ open, onOpenChange, onSuccess }: AddStudentDi
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-[var(--border-color)] bg-[var(--card-bg)] w-[calc(100vw-2rem)] sm:w-auto sm:max-w-sm rounded-xl">
+      <DialogContent className="border-[var(--border-color)] bg-[var(--card-bg)] w-[calc(100vw-2rem)] sm:w-full sm:max-w-md rounded-xl">
         <DialogHeader>
           <DialogTitle className="text-[var(--text-primary)]">Add Student</DialogTitle>
         </DialogHeader>
