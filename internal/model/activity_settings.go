@@ -37,6 +37,8 @@ type ActivitySettings struct {
 	CardBlur        int `gorm:"default:12" json:"card_blur"`         // 0-24 px
 	DarkCardOpacity int `gorm:"default:85" json:"dark_card_opacity"` // 0-100
 	DarkCardBlur    int `gorm:"default:16" json:"dark_card_blur"`    // 0-24 px
+	// Weather
+	WeatherLocation string `gorm:"size:128" json:"weather_location"` // City name or empty for IP-based
 	UpdatedAt       time.Time `json:"updated_at"`
 }
 

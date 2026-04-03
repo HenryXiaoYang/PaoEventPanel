@@ -350,10 +350,54 @@ export function SettingsPanel({ open, onOpenChange, onSettingsChanged }: Setting
           <div className="space-y-2">
      <Label className="text-[var(--text-secondary)]">Logo</Label>
        {settings.logo_path && (
-          <img src={settings.logo_path} alt="Logo" className="h-16 w-16 rounded-lg object-contain border border-[var(--border-color)]" />
+          <div className="relative inline-block">
+            <img src={settings.logo_path} alt="Logo" className="h-16 w-16 rounded-lg object-contain border border-[var(--border-color)]" />
+            <button
+              onClick={() => saveField("logo_path", "")}
+              className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#E57373] text-white hover:bg-[#EF5350] transition-colors"
+            >
+              <X className="h-2.5 w-2.5" />
+            </button>
+          </div>
          )}
         <Input type="file" accept="image/*" onChange={handleLogoUpload} className="border-[var(--border-color)] bg-[var(--card-bg-secondary)] text-[var(--text-primary)]" />
         </div>
+          <div className="space-y-2">
+            <Label className="text-[var(--text-secondary)]">Weather Location</Label>
+            <div className="flex gap-2">
+              <Input
+                list="weather-locations"
+                value={settings.weather_location || ""}
+                onChange={(e) => setSettings({ ...settings, weather_location: e.target.value })}
+                className="border-[var(--border-color)] bg-[var(--card-bg-secondary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
+                placeholder="Auto (IP-based)"
+              />
+              <datalist id="weather-locations">
+                <option value="">Auto (IP-based)</option>
+                <option value="Beijing" />
+                <option value="Shanghai" />
+                <option value="Guangzhou" />
+                <option value="Shenzhen" />
+                <option value="Chengdu" />
+                <option value="Hangzhou" />
+                <option value="Wuhan" />
+                <option value="Nanjing" />
+                <option value="Chongqing" />
+                <option value="Xi'an" />
+                <option value="Suzhou" />
+                <option value="Tianjin" />
+                <option value="Hong Kong" />
+                <option value="Taipei" />
+                <option value="Tokyo" />
+                <option value="Seoul" />
+                <option value="Singapore" />
+                <option value="London" />
+                <option value="New York" />
+              </datalist>
+              <Button size="sm" disabled={saving} onClick={() => saveField("weather_location", settings.weather_location || "")} style={{ backgroundColor: "var(--theme-primary)" }}>Save</Button>
+            </div>
+            <p className="text-xs text-[var(--text-muted)]">Select a city or type any location.</p>
+          </div>
          </TabsContent>
 
        {/* Theme Tab */}

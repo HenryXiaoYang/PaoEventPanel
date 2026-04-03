@@ -62,6 +62,8 @@ export interface ActivitySettings {
   card_blur: number;
   dark_card_opacity: number;
   dark_card_blur: number;
+  // Weather
+  weather_location: string;
 }
 
 export interface ThemePreset {

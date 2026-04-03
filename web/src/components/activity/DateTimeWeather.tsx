@@ -7,7 +7,11 @@ interface WeatherData {
   icon: string;
 }
 
-export function DateTimeWeather() {
+interface DateTimeWeatherProps {
+  weatherLocation?: string;
+}
+
+export function DateTimeWeather({ weatherLocation }: DateTimeWeatherProps) {
   const [time, setTime] = useState(new Date());
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
@@ -17,9 +21,13 @@ export function DateTimeWeather() {
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch weather on mount (using a free API with IP-based location)
+  // Fetch weather on mount or when location changes
   useEffect(() => {
-    fetch("https://wttr.in/?format=j1")
+    const loc = weatherLocation?.trim() || "";
+    const url = loc
+      ? `https://wttr.in/${encodeURIComponent(loc)}?format=j1`
+      : "https://wttr.in/?format=j1";
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
         const current = data.current_condition?.[0];
@@ -34,7 +42,7 @@ export function DateTimeWeather() {
       .catch(() => {
         // Silently fail - weather is not critical
       });
-  }, []);
+  }, [weatherLocation]);
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString("en-US", {

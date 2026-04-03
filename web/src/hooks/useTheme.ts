@@ -36,6 +36,7 @@ const defaultSettings: ActivitySettings = {
   card_blur: 12,
   dark_card_opacity: 85,
   dark_card_blur: 16,
+  weather_location: "",
 };
 
 export function useTheme() {

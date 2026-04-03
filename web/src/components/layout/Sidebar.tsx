@@ -42,7 +42,7 @@ export function Sidebar({ settings, stats, houses, onStudentAdded, onSettingsCha
         <ActivityHeader settings={settings} />
         <StatsCards stats={stats} />
         <HousePodium houses={houses} />
-        <DateTimeWeather />
+        <DateTimeWeather weatherLocation={settings.weather_location} />
       </div>
 
       {/* Fixed bottom section */}
