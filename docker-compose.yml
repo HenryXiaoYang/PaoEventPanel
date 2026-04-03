@@ -12,10 +12,7 @@ services:
       - SUPER_ADMIN_USER=${SUPER_ADMIN_USER:-admin}
       - SUPER_ADMIN_PASS=${SUPER_ADMIN_PASS:-admin123}
     volumes:
-      - db-data:/app/data
-      - uploads:/app/uploads
+      - ./data:/app/data
+      - ./uploads:/app/uploads
     restart: unless-stopped
 
-volumes:
-  db-data:
-  uploads:

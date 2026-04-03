@@ -90,7 +90,7 @@
     --border: #e5e7eb;
     --input: #e5e7eb;
     --ring: var(--theme-accent);
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
     --chart-1: #7CB99A;
     --chart-2: #81C784;

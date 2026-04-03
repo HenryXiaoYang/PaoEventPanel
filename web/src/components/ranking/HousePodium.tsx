@@ -40,9 +40,9 @@ export function HousePodium({ houses }: HousePodiumProps) {
                 </div>
 
                 {/* Progress bar */}
-                <div className="h-5 lg:h-6 w-full rounded-full bg-[var(--card-bg-secondary)] overflow-hidden">
+                <div className="h-5 lg:h-6 w-full rounded-sm bg-[var(--card-bg-secondary)] overflow-hidden">
                   <div
-                    className="h-full rounded-full transition-all duration-700 ease-out"
+                    className="h-full rounded-sm transition-all duration-700 ease-out"
                     style={{
                       width: `${Math.max(barPercent, 8)}%`,
                       backgroundColor: house.color,
