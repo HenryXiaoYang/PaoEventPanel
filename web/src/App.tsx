@@ -30,6 +30,18 @@ function App() {
     document.title = settings.activity_name || "Event Panel";
   }, [settings.activity_name]);
 
+  useEffect(() => {
+    if (settings.logo_path) {
+      let link = document.querySelector<HTMLLinkElement>("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "icon";
+        document.head.appendChild(link);
+      }
+      link.href = settings.logo_path;
+    }
+  }, [settings.logo_path]);
+
   const backgroundStyle = useMemo(() => {
     const mode = isDark ? (settings.dark_bg_mode || "gradient") : settings.bg_mode;
     const color = isDark ? (settings.dark_bg_color || "#0f1117") : (settings.bg_color || "#f8fafc");
