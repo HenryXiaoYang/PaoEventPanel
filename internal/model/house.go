@@ -1,13 +1,20 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type House struct {
-	gorm.Model
-	Name     string    `gorm:"size:16;uniqueIndex;not null" json:"name"`
-	Code     string    `gorm:"size:16;uniqueIndex;not null" json:"code"`
-	Color    string    `gorm:"size:7;not null" json:"color"`
-	Students []Student `gorm:"foreignKey:HouseID" json:"students,omitempty"`
+	ID        uint           `gorm:"primaryKey" json:"id"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+	Name      string         `gorm:"size:16;uniqueIndex;not null" json:"name"`
+	Code      string         `gorm:"size:16;uniqueIndex;not null" json:"code"`
+	Color     string         `gorm:"size:7;not null" json:"color"`
+	Students  []Student      `gorm:"foreignKey:HouseID" json:"students,omitempty"`
 }
 
 var DefaultHouses = []House{
