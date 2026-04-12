@@ -30,6 +30,10 @@ func main() {
 		log.Fatalf("Failed to create uploads directory: %v", err)
 	}
 
+	if err := os.MkdirAll("data", 0755); err != nil {
+		log.Fatalf("Failed to create data directory: %v", err)
+	}
+
 	r := gin.Default()
 	r.MaxMultipartMemory = 5 << 20 // 5 MB
 

@@ -5,6 +5,7 @@
 .env
 uploads/*
 !uploads/.gitkeep
+data/
 
 # Go
 /pao-event-panel

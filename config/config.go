@@ -24,7 +24,7 @@ func Load() {
 	AppConfig = &Config{
 		Port:           getEnv("PORT", "8080"),
 		DBDriver:       getEnv("DB_DRIVER", "sqlite"),
-		DBDSN:          getEnv("DB_DSN", "pao_event.db"),
+		DBDSN:          getEnv("DB_DSN", "data/pao_event.db"),
 		JWTSecret:      getEnv("JWT_SECRET", "change-me-in-production"),
 		SuperAdminUser: getEnv("SUPER_ADMIN_USER", "admin"),
 		SuperAdminPass: getEnv("SUPER_ADMIN_PASS", "admin123"),

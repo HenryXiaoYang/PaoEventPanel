@@ -30,6 +30,7 @@ func Setup(r *gin.Engine) {
 		admin.DELETE("/students/:id", handler.DeleteStudent)
 		admin.POST("/students/:id/laps", handler.AddLaps)
 		admin.PUT("/students/:id/laps", handler.SetLaps)
+		admin.GET("/autocomplete/search", handler.SearchStudentDirectory)
 	}
 
 	// Super admin routes
@@ -50,6 +51,9 @@ func Setup(r *gin.Engine) {
 		superAdmin.DELETE("/theme-presets/:id", handler.DeleteThemePreset)
 		superAdmin.POST("/theme-presets/:id/apply", handler.ApplyThemePreset)
 		superAdmin.GET("/export/rankings", handler.ExportRankings)
+		superAdmin.GET("/autocomplete/status", handler.GetDirectoryStatus)
+		superAdmin.GET("/autocomplete/template", handler.DownloadDirectoryTemplate)
+		superAdmin.POST("/autocomplete/upload", handler.UploadStudentDirectory)
 	}
 
 	// Static files for uploads

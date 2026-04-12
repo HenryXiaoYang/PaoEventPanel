@@ -7,6 +7,7 @@ export interface House {
 
 export interface Student {
   id: number;
+  student_id: string;
   name: string;
   house_id: number;
   house: House;

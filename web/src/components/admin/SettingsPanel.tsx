@@ -26,8 +26,9 @@ import {
 import { getUsers, createUser, deleteUser } from "@/api/users";
 import { getHouses, updateHouseColor } from "@/api/houses";
 import type { ActivitySettings, User, House, ThemePreset, BuiltinThemePreset } from "@/types";
-import { ChevronDown, ChevronRight, X, Save, Download } from "lucide-react";
+import { ChevronDown, ChevronRight, X, Save, Download, Upload, Database } from "lucide-react";
 import { exportRankings } from "@/api/export";
+import { getAutocompleteStatus, uploadAutocompleteDB, downloadAutocompleteTemplate, type AutocompleteStatus } from "@/api/autocomplete";
 const BUILTIN_PRESETS: BuiltinThemePreset[] = [
   { slug: "default", name: "Default", is_builtin: true, primary_color: "#7CB99A", accent_color: "#9ABBE0", dark_primary_color: "#8ECFAB", dark_accent_color: "#A8C8E8" },
  { slug: "ocean", name: "Ocean", is_builtin: true, primary_color: "#00897B", accent_color: "#0288D1", dark_primary_color: "#4DB6AC", dark_accent_color: "#4FC3F7" },
@@ -54,6 +55,8 @@ export function SettingsPanel({ open, onOpenChange, onSettingsChanged }: Setting
   const [savingPreset, setSavingPreset] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [directoryStatus, setDirectoryStatus] = useState<AutocompleteStatus | null>(null);
+  const [uploadingDirectory, setUploadingDirectory] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -61,6 +64,7 @@ export function SettingsPanel({ open, onOpenChange, onSettingsChanged }: Setting
       getUsers().then(setUsers);
     getHouses().then(setHouses);
    getThemePresets().then(setCustomPresets);
+      getAutocompleteStatus().then(setDirectoryStatus).catch(() => {});
     }
   }, [open]);
 
@@ -621,6 +625,61 @@ export function SettingsPanel({ open, onOpenChange, onSettingsChanged }: Setting
 
        {/* Data Tab */}
         <TabsContent value="data" className="space-y-4 mt-4">
+          <div className="space-y-3">
+            <Label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+              Student Directory
+            </Label>
+            <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+              <Database className="h-4 w-4" />
+              {directoryStatus?.loaded
+                ? `${directoryStatus.count} students loaded`
+                : "No directory uploaded"}
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex-1 border-[var(--border-color)] bg-[var(--card-bg)] text-[var(--text-primary)] hover:bg-[var(--card-bg-secondary)]"
+                onClick={async () => {
+                  try { await downloadAutocompleteTemplate(); } catch { /* ignore */ }
+                }}
+              >
+                <Download className="mr-1.5 h-3.5 w-3.5" />
+                Download Template
+              </Button>
+              <Button
+                size="sm"
+                className="flex-1 text-white relative"
+                style={{ backgroundColor: "var(--theme-primary)" }}
+                disabled={uploadingDirectory}
+                onClick={() => {
+                  const input = document.createElement("input");
+                  input.type = "file";
+                  input.accept = ".db";
+                  input.onchange = async () => {
+                    const file = input.files?.[0];
+                    if (!file) return;
+                    setUploadingDirectory(true);
+                    try {
+                      const result = await uploadAutocompleteDB(file);
+                      setDirectoryStatus({ loaded: true, count: result.count });
+                    } catch { /* ignore */ }
+                    finally { setUploadingDirectory(false); }
+                  };
+                  input.click();
+                }}
+              >
+                <Upload className="mr-1.5 h-3.5 w-3.5" />
+                {uploadingDirectory ? "Uploading..." : "Upload Directory"}
+              </Button>
+            </div>
+            <p className="text-xs text-[var(--text-muted)]">
+              Upload a SQLite database with student info to enable name/ID autocomplete when adding students.
+            </p>
+          </div>
+
+          <Separator className="bg-[var(--border-color)]" />
+
           <div className="space-y-3">
             <Label className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
               Export

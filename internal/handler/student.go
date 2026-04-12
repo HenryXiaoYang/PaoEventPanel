@@ -11,14 +11,16 @@ import (
 )
 
 type createStudentRequest struct {
-	Name     string `json:"name" binding:"required"`
-	HouseID  uint   `json:"house_id" binding:"required"`
-	LapCount int    `json:"lap_count"`
+	StudentID string `json:"student_id"`
+	Name      string `json:"name" binding:"required"`
+	HouseID   uint   `json:"house_id" binding:"required"`
+	LapCount  int    `json:"lap_count"`
 }
 
 type updateStudentRequest struct {
-	Name    string `json:"name"`
-	HouseID uint   `json:"house_id"`
+	StudentID *string `json:"student_id"`
+	Name      string  `json:"name"`
+	HouseID   uint    `json:"house_id"`
 }
 
 type addLapsRequest struct {
@@ -58,9 +60,10 @@ func CreateStudent(c *gin.Context) {
 	}
 
 	student := model.Student{
-		Name:     req.Name,
-		HouseID:  req.HouseID,
-		LapCount: req.LapCount,
+		StudentID: req.StudentID,
+		Name:      req.Name,
+		HouseID:   req.HouseID,
+		LapCount:  req.LapCount,
 	}
 	if err := database.DB.Create(&student).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -90,6 +93,9 @@ func UpdateStudent(c *gin.Context) {
 		return
 	}
 
+	if req.StudentID != nil {
+		student.StudentID = *req.StudentID
+	}
 	if req.Name != "" {
 		student.Name = req.Name
 	}

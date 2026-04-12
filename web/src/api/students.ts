@@ -7,12 +7,12 @@ export async function getStudents(houseId?: number): Promise<Student[]> {
   return data;
 }
 
-export async function createStudent(name: string, houseId: number, lapCount?: number): Promise<Student> {
-  const { data } = await api.post<Student>("/students", { name, house_id: houseId, lap_count: lapCount ?? 0 });
+export async function createStudent(name: string, houseId: number, lapCount?: number, studentId?: string): Promise<Student> {
+  const { data } = await api.post<Student>("/students", { name, house_id: houseId, lap_count: lapCount ?? 0, student_id: studentId ?? "" });
   return data;
 }
 
-export async function updateStudent(id: number, updates: { name?: string; house_id?: number }): Promise<Student> {
+export async function updateStudent(id: number, updates: { name?: string; house_id?: number; student_id?: string }): Promise<Student> {
   const { data } = await api.put<Student>(`/students/${id}`, updates);
   return data;
 }
