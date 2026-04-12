@@ -32,6 +32,11 @@ type Stats struct {
 }
 
 func HouseRankings(c *gin.Context) {
+	if cached, ok := getCached("house_rankings"); ok {
+		c.JSON(http.StatusOK, cached)
+		return
+	}
+
 	type result struct {
 		HouseID      uint `gorm:"column:house_id"`
 		TotalLaps    int  `gorm:"column:total_laps"`
@@ -86,10 +91,16 @@ func HouseRankings(c *gin.Context) {
 		}
 	}
 
+	setCache("house_rankings", rankings)
 	c.JSON(http.StatusOK, rankings)
 }
 
 func StudentRankings(c *gin.Context) {
+	if cached, ok := getCached("student_rankings"); ok {
+		c.JSON(http.StatusOK, cached)
+		return
+	}
+
 	var students []model.Student
 	database.DB.Preload("House").Order("lap_count DESC, name ASC").Find(&students)
 
@@ -108,15 +119,22 @@ func StudentRankings(c *gin.Context) {
 		}
 	}
 
+	setCache("student_rankings", rankings)
 	c.JSON(http.StatusOK, rankings)
 }
 
 func RankingStats(c *gin.Context) {
+	if cached, ok := getCached("ranking_stats"); ok {
+		c.JSON(http.StatusOK, cached)
+		return
+	}
+
 	var stats Stats
 
 	database.DB.Model(&model.Student{}).
 		Select("COALESCE(SUM(lap_count), 0) as total_laps, COUNT(*) as total_participants").
 		Scan(&stats)
 
+	setCache("ranking_stats", stats)
 	c.JSON(http.StatusOK, stats)
 }

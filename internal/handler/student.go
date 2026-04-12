@@ -71,6 +71,7 @@ func CreateStudent(c *gin.Context) {
 	}
 
 	database.DB.Preload("House").First(&student, student.ID)
+	InvalidateRankingCache()
 	c.JSON(http.StatusCreated, student)
 }
 
@@ -114,6 +115,7 @@ func UpdateStudent(c *gin.Context) {
 	}
 
 	database.DB.Preload("House").First(&student, student.ID)
+	InvalidateRankingCache()
 	c.JSON(http.StatusOK, student)
 }
 
@@ -128,6 +130,7 @@ func DeleteStudent(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	InvalidateRankingCache()
 	c.JSON(http.StatusOK, gin.H{"message": "deleted"})
 }
 
@@ -179,6 +182,7 @@ func AddLaps(c *gin.Context) {
 
 	tx.Commit()
 	database.DB.Preload("House").First(&student, student.ID)
+	InvalidateRankingCache()
 	c.JSON(http.StatusOK, student)
 }
 
@@ -226,5 +230,6 @@ func SetLaps(c *gin.Context) {
 
 	tx.Commit()
 	database.DB.Preload("House").First(&student, student.ID)
+	InvalidateRankingCache()
 	c.JSON(http.StatusOK, student)
 }
