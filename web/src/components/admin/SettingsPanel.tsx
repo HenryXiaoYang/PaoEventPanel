@@ -594,7 +594,7 @@ export function SettingsPanel({ open, onOpenChange, onSettingsChanged }: Setting
         {u.role === "super_admin" ? "Super Admin" : "Admin"}
           </span>
             </div>
-          {currentUser?.id !== u.id && (
+          {currentUser?.username !== u.username && (
          <Button size="sm" variant="ghost" className="h-7 text-xs text-[#E57373] hover:bg-[var(--card-bg-secondary)] hover:text-[#E57373]" onClick={() => handleDeleteUser(u.id)}>Delete</Button>
         )}
          </div>
