@@ -60,6 +60,7 @@ func UpdateActivity(c *gin.Context) {
 		"card_blur":              true,
 		"dark_card_opacity":      true,
 		"dark_card_blur":         true,
+		"weather_location":       true,
 	}
 
 	filteredUpdates := make(map[string]interface{})
