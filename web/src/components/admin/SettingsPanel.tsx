@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuthStore } from "@/stores/authStore";
 import {
  Dialog,
   DialogContent,
@@ -43,6 +44,7 @@ interface SettingsPanelProps {
 }
 
 export function SettingsPanel({ open, onOpenChange, onSettingsChanged }: SettingsPanelProps) {
+  const { user: currentUser } = useAuthStore();
  const [settings, setSettings] = useState<ActivitySettings | null>(null);
   const [users, setUsers] = useState<User[]>([]);
  const [houses, setHouses] = useState<House[]>([]);
@@ -324,7 +326,7 @@ export function SettingsPanel({ open, onOpenChange, onSettingsChanged }: Setting
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="max-h-[90vh] sm:max-h-[85vh] overflow-y-auto border-[var(--border-color)] bg-[var(--card-bg)] w-[calc(100vw-1rem)] sm:w-auto sm:max-w-lg rounded-xl">
+    <DialogContent className="max-h-[90vh] sm:max-h-[85vh] overflow-y-auto border-[var(--border-color)] bg-[var(--card-bg)] w-[calc(100vw-1rem)] sm:w-full sm:max-w-2xl rounded-xl">
        <DialogHeader>
          <DialogTitle className="text-[var(--text-primary)]">Settings</DialogTitle>
      </DialogHeader>
@@ -592,7 +594,7 @@ export function SettingsPanel({ open, onOpenChange, onSettingsChanged }: Setting
         {u.role === "super_admin" ? "Super Admin" : "Admin"}
           </span>
             </div>
-          {u.role !== "super_admin" && (
+          {currentUser?.id !== u.id && (
          <Button size="sm" variant="ghost" className="h-7 text-xs text-[#E57373] hover:bg-[var(--card-bg-secondary)] hover:text-[#E57373]" onClick={() => handleDeleteUser(u.id)}>Delete</Button>
         )}
          </div>
