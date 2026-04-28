@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { User } from "@/types";
-import { login as apiLogin } from "@/api/auth";
+import { login as apiLogin, getMe } from "@/api/auth";
 
 interface AuthState {
   token: string | null;
@@ -36,6 +36,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       try {
         const user = JSON.parse(userStr) as User;
         set({ token, user, isLoggedIn: true });
+        getMe().catch(() => {
+          useAuthStore.getState().logout();
+        });
       } catch {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
